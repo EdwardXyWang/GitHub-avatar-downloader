@@ -1,4 +1,5 @@
 var request = require('request');
+var fs = require('fs');
 // Use the request module
 var GITHUB_USER = "EdwardXyWang";
 var GITHUB_TOKEN = "99d0794799453d96f02d40a551f3b97650f7cf8a";
@@ -26,3 +27,22 @@ function printImage(err, response, body){
 };
 
 getRepoContributors("jquery", "jquery", printImage);
+
+
+
+
+
+function downloadImageByURL(url, filePath) {
+  request.get(url).on('error', function(err) {throw(err);})
+    .pipe(fs.createWriteStream(filePath));
+}
+
+// downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "./kvirani.jpg")
+
+
+
+
+
+
+
+
