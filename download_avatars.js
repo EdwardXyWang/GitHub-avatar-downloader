@@ -15,31 +15,30 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: requestURL,
     headers: {'user-agent': 'GitHub Avatar Downloader - Student Project'}
   };
-  // get the body
+
   request(requestOptions, cb);
 }
 
 function printImage(err, response, body){
   body = JSON.parse(body);
+  var urlFile = [];
+  var pathFile = [];
   for (var i = 0; i < body.length; i++) {
-    console.log(body[i]['avatar_url']);
-  }
+    urlFile[i] = body[i]['avatar_url'];
+    pathFile[i] = './avatars/' + body[i]['login'] + '.jpg'
+  };
+  for (var i = 0; i < body.length; i++) {
+    downloadImageByURL(urlFile[i], pathFile[i]);
+  };
 };
 
-getRepoContributors("jquery", "jquery", printImage);
-
-
-
-
-
+// store the images
 function downloadImageByURL(url, filePath) {
   request.get(url).on('error', function(err) {throw(err);})
     .pipe(fs.createWriteStream(filePath));
 }
 
-// downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "./kvirani.jpg")
-
-
+getRepoContributors("jquery", "jquery", printImage);
 
 
 
