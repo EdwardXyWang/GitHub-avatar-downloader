@@ -28,6 +28,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 function printImage(err, response, body){
   body = JSON.parse(body);
+  // convert the string body to object body
   var urlFile = [];
   var pathFile = [];
   // Store urlFile and pathFile
