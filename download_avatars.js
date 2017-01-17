@@ -9,10 +9,19 @@ function getRepoContributors(repoOwner, repoName, cb) {
   // the main function to fetch the contributors avatar
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN +
   '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-  console.log(requestURL);
+  // set options
+  var requestOptions = {
+    url: requestURL,
+    headers: {'user-agent': 'GitHub Avatar Downloader - Student Project'}
+  };
+  // get the body
+  request(requestOptions, function(err, response, body){
+    console.log('body is:', body);
+  });
 }
 
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   console.log("Errors:", err);
-//   console.log("Result:", result);
-// });
+getRepoContributors("jquery", "jquery", function(err, result) {
+  console.log("Errors:", err);
+  console.log("Result:", result);
+});
+
