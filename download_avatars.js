@@ -7,6 +7,10 @@ var GITHUB_TOKEN = "99d0794799453d96f02d40a551f3b97650f7cf8a";
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
 // get repo owner and repo name
+if (process.argv.length !== 4) {
+  throw new Error('Plesse input the right format: repoOwner repoName');
+}
+// set the warning when the input arguments are not legal
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
