@@ -32,6 +32,14 @@ function printImage(err, response, body){
   if (err) { throw(err); }
 
   body = JSON.parse(body);
+  // handle error if repo is not found
+  if (body.message === 'Not Found') {
+    throw new Error('Your Repo is not found!');
+  }
+  // handle error if credential is not valid
+  if (body.message === 'Bad credentials') {
+    throw new Error('Credential is not valid!');
+  }
 
   const [urlFile, pathFile] = makePath(body);
 
@@ -63,4 +71,8 @@ function downloadImageByURL(url, filePath) {
     .pipe(fs.createWriteStream(filePath));
 }
 
-getRepoContributors(repoOwner, repoName, printImage);
+try {
+  getRepoContributors(repoOwner, repoName, printImage);
+} catch (err) {
+  console.log('Error: ', err);
+}
