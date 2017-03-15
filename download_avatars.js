@@ -1,17 +1,17 @@
 const request = require('request');
 const fs = require('fs');
-const ENV = require('dotenv').config();
-// Use the request module
-const GITHUB_USER = process.env.GITHUB_USER;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-// store token as globle environment variable, call <$gitapil> to show
+require('dotenv').config();
+
 const repoOwner = process.argv[2];
 const repoName = process.argv[3];
-// get repo owner and repo name
+
+const GITHUB_USER = process.env.GITHUB_USER;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+// set the warning when the input arguments are not legal
 if (process.argv.length !== 4) {
   throw new Error('Plesse input the right format: repoOwner repoName');
 }
-// set the warning when the input arguments are not legal
+
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -28,21 +28,30 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 function printImage(err, response, body){
+  console.log('It starts downloading...');
   if (err) { throw(err); }
+
   body = JSON.parse(body);
-  // convert the string body to object body
-  var urlFile = [];
-  var pathFile = [];
-  // Store urlFile and pathFile
-  for (var i = 0; i < body.length; i++) {
-    urlFile[i] = body[i]['avatar_url'];
-    pathFile[i] = './avatars/' + body[i]['login'] + '.jpg'
-  };
+
+  const [urlFile, pathFile] = makePath(body);
+
   // download them
-  for (var i = 0; i < body.length; i++) {
+  for (let i = 0; i < body.length; i++) {
     downloadImageByURL(urlFile[i], pathFile[i]);
-  };
-};
+  }
+  console.log("Congratulations! It's done!");
+}
+
+// Store urlFile and the saving path
+function makePath(body) {
+  let urlFile = [];
+  let pathFile = [];
+  for (let i = 0; i < body.length; i++) {
+    urlFile[i] = body[i].avatar_url;
+    pathFile[i] = './avatars/' + body[i].login + '.jpg';
+  }
+  return [urlFile, pathFile];
+}
 
 // store the images
 function downloadImageByURL(url, filePath) {
