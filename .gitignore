@@ -1,4 +1,6 @@
-
+.env
+avatars/
+.DS_Store
 gs
 logs
 *.log

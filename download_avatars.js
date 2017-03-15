@@ -1,11 +1,12 @@
-var request = require('request');
-var fs = require('fs');
+const request = require('request');
+const fs = require('fs');
+const ENV = require('dotenv').config();
 // Use the request module
-var GITHUB_USER = "EdwardXyWang";
-var GITHUB_TOKEN = "99d0794799453d96f02d40a551f3b97650f7cf8a";
+const GITHUB_USER = process.env.GITHUB_USER;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 // store token as globle environment variable, call <$gitapil> to show
-var repoOwner = process.argv[2];
-var repoName = process.argv[3];
+const repoOwner = process.argv[2];
+const repoName = process.argv[3];
 // get repo owner and repo name
 if (process.argv.length !== 4) {
   throw new Error('Plesse input the right format: repoOwner repoName');
@@ -15,7 +16,7 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
   // the main function to fetch the contributors avatar
-  var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN +
+  const requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN +
   '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
   // set options
   var requestOptions = {
@@ -27,6 +28,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
 }
 
 function printImage(err, response, body){
+  if (err) { throw(err); }
   body = JSON.parse(body);
   // convert the string body to object body
   var urlFile = [];
