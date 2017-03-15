@@ -46,6 +46,10 @@ function printImage(err, response, body){
 function makePath(body) {
   let urlFile = [];
   let pathFile = [];
+  // if folder ./avatars does not exist, create one
+  if (!fs.existsSync('./avatars')) {
+    fs.mkdirSync('./avatars');
+  }
   for (let i = 0; i < body.length; i++) {
     urlFile[i] = body[i].avatar_url;
     pathFile[i] = './avatars/' + body[i].login + '.jpg';
